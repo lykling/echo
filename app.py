@@ -15,4 +15,8 @@ def hello():
 def getip():
     """getip
     """
-    return request.remote_addr
+    client_addr = request.remote_addr
+    if 'X-Forwarded-For' in request.headers:
+        x_forwarded_for = request.headers.getlist('X-Forwarded-For')
+        client_addr = x_forwarded_for[0].rpartition(' ')[-1]
+    return client_addr
