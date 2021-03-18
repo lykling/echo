@@ -1,7 +1,10 @@
+import json
+import logging
 from flask import Flask
 from flask import request
 
 app = Flask(__name__)
+logging.root.setLevel(logging.DEBUG)
 
 
 @app.route('/hello')
@@ -23,3 +26,10 @@ def getip():
         real_ip = request.headers.get('X-Real-IP')
         client_addr = real_ip
     return client_addr
+
+
+@app.before_request
+def router_in():
+    """router_in
+    """
+    logging.info(json.dumps(list(request.headers.items())))
