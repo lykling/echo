@@ -7,6 +7,13 @@ app = Flask(__name__)
 logging.root.setLevel(logging.DEBUG)
 
 
+@app.route('/healthcheck')
+def healthcheck():
+    """helthcheck
+    """
+    return ""
+
+
 @app.route('/hello')
 def hello():
     """hello
@@ -23,8 +30,8 @@ def getip():
         x_forwarded_for = request.headers.getlist('X-Forwarded-For')
         client_addr = x_forwarded_for[0].rpartition(' ')[-1]
     if 'X-Real-IP' in request.headers:
-        real_ip = request.headers.get('X-Real-IP')
-        client_addr = real_ip
+        real_ip = request.headers.getlist('X-Real-IP')
+        client_addr = real_ip[0].rpartition(' ')[-1]
     return client_addr
 
 
